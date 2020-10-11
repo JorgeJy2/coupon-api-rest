@@ -145,9 +145,54 @@ public class CouponsController {
 
 			if (couponFind != null) {
 
-				couponFind.setName(coupon.getName());
-				couponFind.setUpdateAt(new Date());
+				if (coupon.getName() != null) {
+					couponFind.setName(coupon.getName());
+				}
+				if (coupon.getDescription() != null) {
+					couponFind.setDescription(coupon.getDescription());
+				}
+				
+				if (coupon.getImageUrl() != null) {
+					couponFind.setImageUrl(coupon.getImageUrl());
+				}
+				
+				if (coupon.getStore() != null) {
+					couponFind.setStore(coupon.getStore());
+				}
 
+				if (coupon.getOffertText() != null) {
+					couponFind.setOffertText(coupon.getOffertText());
+				}
+
+				if (coupon.getOffertValue() != null) {
+					couponFind.setOffertValue(coupon.getOffertValue());
+				}
+
+				if (coupon.getCode() != null) {
+					couponFind.setCode(coupon.getCode());
+				}
+
+				if (coupon.getTermsAndConditions() != null) {
+					couponFind.setTermsAndConditions(coupon.getTermsAndConditions());
+				}
+
+				if (coupon.getUrl() != null) {
+					couponFind.setUrl(coupon.getUrl());
+				}
+
+				if (coupon.getStatus() != null) {
+					couponFind.setStatus(coupon.getStatus());
+				}
+
+				if (coupon.getStartDate() != null) {
+					couponFind.setStartDate(coupon.getStartDate());
+				}
+
+				if (coupon.getEndDate() != null) {
+					couponFind.setEndDate(coupon.getEndDate());
+				}
+
+				couponFind.setUpdateAt(new Date());
 				Coupon couponUpdate = couponService.save(couponFind);
 
 				modelResponse.setMessage("Coupon update.");

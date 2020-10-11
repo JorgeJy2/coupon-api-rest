@@ -27,7 +27,7 @@ public class ResponseService<T> {
 	}
 
 	public void setContent(T content) {
-		this.content = content;
+		this.content = content; 
 	}
 
 }

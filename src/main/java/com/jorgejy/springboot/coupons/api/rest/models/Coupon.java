@@ -22,6 +22,30 @@ public class Coupon {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	@Column(name = "image_url")
+	private String imageUrl;
+	private String description;
+	private String store;
+
+	@Column(name = "offert_text")
+	private String offertText;
+	@Column(name = "offert_value")
+	private String offertValue;
+	private String code;
+	@Column(name = "terms_conditions")
+	private String termsAndConditions;
+	private String url;
+	private StatusCuopns status;
+
+	@Column(name = "start_date")
+	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date startDate;
+
+	@Column(name = "end_date")
+	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date endDate;
 
 	@Column(name = "create_at")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -61,6 +85,94 @@ public class Coupon {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getStore() {
+		return store;
+	}
+
+	public void setStore(String store) {
+		this.store = store;
+	}
+
+	public String getOffertText() {
+		return offertText;
+	}
+
+	public void setOffertText(String offertText) {
+		this.offertText = offertText;
+	}
+
+	public String getOffertValue() {
+		return offertValue;
+	}
+
+	public void setOffertValue(String offertValue) {
+		this.offertValue = offertValue;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getTermsAndConditions() {
+		return termsAndConditions;
+	}
+
+	public void setTermsAndConditions(String termsAndConditions) {
+		this.termsAndConditions = termsAndConditions;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public StatusCuopns getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusCuopns status) {
+		this.status = status;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 
 	public Date getCreateAt() {
