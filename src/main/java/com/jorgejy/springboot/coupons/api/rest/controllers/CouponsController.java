@@ -4,11 +4,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +31,8 @@ import com.jorgejy.springboot.coupons.api.rest.services.CouponService;
 @RestController
 @RequestMapping("coupons-api")
 public class CouponsController {
+
+	private static Logger log = LoggerFactory.getLogger(CouponsController.class);
 
 	@Autowired
 	private CouponService couponService;
@@ -98,25 +106,38 @@ public class CouponsController {
 	}
 
 	@PostMapping()
-	public ResponseEntity<Map<String, Object>> save(@RequestBody Coupon coupon) {
+	public ResponseEntity<Map<String, Object>> save(@Valid @RequestBody Coupon coupon, BindingResult result) {
 		Map<String, Object> response = new HashMap<String, Object>();
 		ResponseService<Coupon> modelResponse = new ResponseService<Coupon>();
 		HttpStatus httpStatus;
 
 		try {
-			Coupon couponResponse = couponService.save(coupon);
-
-			if (couponResponse != null) {
-				modelResponse.setMessage("Coupon add.");
-				modelResponse.setInternalMessage("");
-				modelResponse.setContent(couponResponse);
-				httpStatus = HttpStatus.CREATED;
-			} else {
-				modelResponse.setMessage("Coupon not add.");
-				modelResponse.setInternalMessage("Coupon is empty.");
+			if (result.hasErrors()) {
+				List<String> errros = result.getFieldErrors().stream()
+						.map(error -> error.getField() + " " + error.getDefaultMessage())
+						.peek(error -> log.error(error)).collect(Collectors.toList());
+				modelResponse.setMessage("Coupon not valid.");
+				modelResponse.setInternalMessage(String.join(",", errros));
 				modelResponse.setContent(null);
-				httpStatus = HttpStatus.NOT_FOUND;
+				httpStatus = HttpStatus.NOT_ACCEPTABLE;
+			} else {
+
+				Coupon couponResponse = couponService.save(coupon);
+
+				if (couponResponse != null) {
+					modelResponse.setMessage("Coupon add.");
+					modelResponse.setInternalMessage("");
+					modelResponse.setContent(couponResponse);
+					httpStatus = HttpStatus.CREATED;
+				} else {
+					modelResponse.setMessage("Coupon not add.");
+					modelResponse.setInternalMessage("Coupon is empty.");
+					modelResponse.setContent(null);
+					httpStatus = HttpStatus.NOT_FOUND;
+				}
+
 			}
+
 		} catch (DataAccessException e) {
 			modelResponse.setMessage("Error add in database.");
 			modelResponse.setInternalMessage(e.getMessage());
@@ -151,11 +172,11 @@ public class CouponsController {
 				if (coupon.getDescription() != null) {
 					couponFind.setDescription(coupon.getDescription());
 				}
-				
+
 				if (coupon.getImageUrl() != null) {
 					couponFind.setImageUrl(coupon.getImageUrl());
 				}
-				
+
 				if (coupon.getStore() != null) {
 					couponFind.setStore(coupon.getStore());
 				}

@@ -12,6 +12,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -21,12 +25,15 @@ public class Coupon {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotEmpty
+	@Size(min = 2)
 	private String name;
 	@Column(name = "image_url")
 	private String imageUrl;
+	@NotEmpty
 	private String description;
+	@NotEmpty
 	private String store;
-
 	@Column(name = "offert_text")
 	private String offertText;
 	@Column(name = "offert_value")
@@ -34,6 +41,7 @@ public class Coupon {
 	private String code;
 	@Column(name = "terms_conditions")
 	private String termsAndConditions;
+	@NotEmpty
 	private String url;
 	private StatusCuopns status;
 
@@ -41,7 +49,7 @@ public class Coupon {
 	@Temporal(TemporalType.DATE)
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date startDate;
-
+	@NotNull
 	@Column(name = "end_date")
 	@Temporal(TemporalType.DATE)
 	@JsonFormat(pattern = "yyyy-MM-dd")
