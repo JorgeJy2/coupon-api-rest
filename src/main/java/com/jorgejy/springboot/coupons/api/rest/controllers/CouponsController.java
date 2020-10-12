@@ -117,7 +117,7 @@ public class CouponsController {
 						.map(error -> error.getField() + " " + error.getDefaultMessage())
 						.peek(error -> log.error(error)).collect(Collectors.toList());
 				modelResponse.setMessage("Coupon not valid.");
-				modelResponse.setInternalMessage(String.join(",", errros));
+				modelResponse.setInternalMessage(String.join(", ", errros));
 				modelResponse.setContent(null);
 				httpStatus = HttpStatus.NOT_ACCEPTABLE;
 			} else {
@@ -157,76 +157,42 @@ public class CouponsController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @RequestBody Coupon coupon) {
+	public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @Valid @RequestBody Coupon coupon, BindingResult result) {
 		Map<String, Object> response = new HashMap<String, Object>();
 		ResponseService<Coupon> modelResponse = new ResponseService<Coupon>();
 		HttpStatus httpStatus;
 		try {
-			Coupon couponFind = couponService.findById(id);
-
-			if (couponFind != null) {
-
-				if (coupon.getName() != null) {
-					couponFind.setName(coupon.getName());
-				}
-				if (coupon.getDescription() != null) {
-					couponFind.setDescription(coupon.getDescription());
-				}
-
-				if (coupon.getImageUrl() != null) {
-					couponFind.setImageUrl(coupon.getImageUrl());
-				}
-
-				if (coupon.getStore() != null) {
-					couponFind.setStore(coupon.getStore());
-				}
-
-				if (coupon.getOffertText() != null) {
-					couponFind.setOffertText(coupon.getOffertText());
-				}
-
-				if (coupon.getOffertValue() != null) {
-					couponFind.setOffertValue(coupon.getOffertValue());
-				}
-
-				if (coupon.getCode() != null) {
-					couponFind.setCode(coupon.getCode());
-				}
-
-				if (coupon.getTermsAndConditions() != null) {
-					couponFind.setTermsAndConditions(coupon.getTermsAndConditions());
-				}
-
-				if (coupon.getUrl() != null) {
-					couponFind.setUrl(coupon.getUrl());
-				}
-
-				if (coupon.getStatus() != null) {
-					couponFind.setStatus(coupon.getStatus());
-				}
-
-				if (coupon.getStartDate() != null) {
-					couponFind.setStartDate(coupon.getStartDate());
-				}
-
-				if (coupon.getEndDate() != null) {
-					couponFind.setEndDate(coupon.getEndDate());
-				}
-
-				couponFind.setUpdateAt(new Date());
-				Coupon couponUpdate = couponService.save(couponFind);
-
-				modelResponse.setMessage("Coupon update.");
-				modelResponse.setInternalMessage("");
-				modelResponse.setContent(couponUpdate);
-				httpStatus = HttpStatus.CREATED;
-
-			} else {
-				modelResponse.setMessage("Coupon not found.");
-				modelResponse.setInternalMessage("Coupon is empty.");
+			if (result.hasErrors()) {
+				List<String> errros = result.getFieldErrors().stream()
+						.map(error -> error.getField() + " " + error.getDefaultMessage())
+						.peek(error -> log.error(error)).collect(Collectors.toList());
+				modelResponse.setMessage("Coupon not valid.");
+				modelResponse.setInternalMessage(String.join(", ", errros));
 				modelResponse.setContent(null);
-				httpStatus = HttpStatus.NOT_FOUND;
+				httpStatus = HttpStatus.NOT_ACCEPTABLE;
+			} else {
+				
+				Coupon couponFind = couponService.findById(id);
+				
+				if (couponFind != null) {
+					
+					
+					couponFind.setUpdateAt(new Date());
+					Coupon couponUpdate = couponService.save(couponFind);
+					
+					modelResponse.setMessage("Coupon update.");
+					modelResponse.setInternalMessage("");
+					modelResponse.setContent(couponUpdate);
+					httpStatus = HttpStatus.CREATED;
+					
+				} else {
+					modelResponse.setMessage("Coupon not found.");
+					modelResponse.setInternalMessage("Coupon is empty.");
+					modelResponse.setContent(null);
+					httpStatus = HttpStatus.NOT_FOUND;
+				}
 			}
+			
 		} catch (DataAccessException e) {
 			modelResponse.setMessage("Error update in database.");
 			modelResponse.setInternalMessage(e.getMessage());
