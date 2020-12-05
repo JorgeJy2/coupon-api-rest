@@ -178,7 +178,11 @@ public class CouponsController {
 					
 					
 					couponFind.setUpdateAt(new Date());
-					Coupon couponUpdate = couponService.save(couponFind);
+					
+					coupon.setId(id);
+					coupon.setUpdateAt(new Date());
+					
+					Coupon couponUpdate = couponService.save(coupon);
 					
 					modelResponse.setMessage("Coupon update.");
 					modelResponse.setInternalMessage("");
