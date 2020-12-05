@@ -1,4 +1,4 @@
-package com.jorgejy.springboot.coupons.api.rest.models;
+package com.jorgejy.springboot.coupons.api.rest.models.response;
 
 public class ResponseService<T> {
 
@@ -6,6 +6,17 @@ public class ResponseService<T> {
 	private String internalMessage;
 	private T content;
 
+	public ResponseService(){
+		
+	}
+	
+	public ResponseService(String message, String internalMessage, T content){
+		this.message = message;
+		this.internalMessage = internalMessage;
+		this.content = content;
+	}
+	
+	
 	public String getMessage() {
 		return message;
 	}
@@ -29,5 +40,5 @@ public class ResponseService<T> {
 	public void setContent(T content) {
 		this.content = content; 
 	}
-
+	
 }

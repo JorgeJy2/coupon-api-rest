@@ -82,9 +82,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		body.put("user", (User) authResult.getPrincipal());
 		body.put("message", "Login successfull");
 
-		logger.info("\n\n Token");
-		logger.info(token);
-
+		logger.info("Token "+ token);
+		
 		response.getWriter().write(new ObjectMapper().writeValueAsString(body));
 		response.setStatus(200);
 		response.setContentType("application/json");
