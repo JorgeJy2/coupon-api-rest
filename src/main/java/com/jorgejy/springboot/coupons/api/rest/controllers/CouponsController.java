@@ -176,9 +176,6 @@ public class CouponsController {
 				
 				if (couponFind != null) {
 					
-					
-					couponFind.setUpdateAt(new Date());
-					
 					coupon.setId(id);
 					coupon.setUpdateAt(new Date());
 					
