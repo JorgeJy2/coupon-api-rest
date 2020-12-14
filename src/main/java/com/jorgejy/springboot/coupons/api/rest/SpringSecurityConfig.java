@@ -1,7 +1,6 @@
 package com.jorgejy.springboot.coupons.api.rest;
 
 
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.jorgejy.springboot.coupons.api.rest.auth.filter.JWTAuthenticationFilter;
 import com.jorgejy.springboot.coupons.api.rest.auth.filter.JWTAuthorizationFilter;
-import com.jorgejy.springboot.coupons.api.rest.auth.handler.LoginSuccessHandler;
 import com.jorgejy.springboot.coupons.api.rest.auth.service.JWTService;
 import com.jorgejy.springboot.coupons.api.rest.services.JpaUserDetailsService;
 
@@ -23,14 +21,14 @@ import com.jorgejy.springboot.coupons.api.rest.services.JpaUserDetailsService;
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	@Autowired
-	private LoginSuccessHandler loginSuccessHandler;
-	
+//	@Autowired
+//	private LoginSuccessHandler loginSuccessHandler;
+//	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoderDI;
 	
-	@Autowired
-	private DataSource dataSource;
+//	@Autowired
+//	private DataSource dataSource;
 
 	@Autowired
 	private JpaUserDetailsService jpaUserDetailsService; 
@@ -72,7 +70,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and().addFilter(new JWTAuthenticationFilter(authenticationManager(),jwtService))
 		.addFilter(new JWTAuthorizationFilter(authenticationManager(),jwtService))
 		.csrf().disable()
-		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and().cors(); // active cors
 	}
 	
 	
